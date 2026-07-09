@@ -7,9 +7,8 @@
 const APP_NAME = "PoolMate";
 
 const FORM_CONFIG = {
-  // Paste your Google Apps Script web-app URL here (see SETUP-FORM.md).
-  // It looks like: https://script.google.com/macros/s/AKfycb.../exec
-  endpoint: "PASTE_YOUR_APPS_SCRIPT_URL_HERE",
+  // Google Apps Script web-app URL (see SETUP-FORM.md).
+  endpoint: "https://script.google.com/macros/s/AKfycbx9opRbQqSdw1sE4NJ4YAjMoQScecEwrQejtmQ067SiKsMaL32Epgw7uXxw8nqWDM2p/exec",
 
   // "apps-script" | "formspree" | "web3forms"
   provider: "apps-script",
