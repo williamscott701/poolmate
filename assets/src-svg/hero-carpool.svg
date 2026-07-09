@@ -1,0 +1,99 @@
+<svg class="hero-art" viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heroArtTitle">
+          <title id="heroArtTitle">A car owner and two co-travellers sharing a ride along a mapped route through the city</title>
+          <defs>
+            <clipPath id="heroClip"><rect x="0" y="24" width="640" height="356" rx="30"/></clipPath>
+          </defs>
+          <g clip-path="url(#heroClip)">
+            <rect x="0" y="24" width="640" height="356" fill="#E8F6F1"/>
+            <circle cx="556" cy="88" r="26" fill="#FDE9C8"/>
+            <!-- back buildings -->
+            <g fill="#D5F0E8">
+              <rect x="34" y="146" width="54" height="140" rx="6"/>
+              <rect x="100" y="116" width="66" height="170" rx="6"/>
+              <rect x="178" y="168" width="46" height="118" rx="6"/>
+              <rect x="404" y="136" width="60" height="150" rx="6"/>
+              <rect x="474" y="168" width="72" height="118" rx="6"/>
+            </g>
+            <!-- front buildings -->
+            <g fill="#BFE7DC">
+              <rect x="66" y="192" width="62" height="94" rx="6"/>
+              <rect x="238" y="150" width="74" height="136" rx="6"/>
+              <rect x="328" y="186" width="54" height="100" rx="6"/>
+              <rect x="524" y="200" width="58" height="86" rx="6"/>
+            </g>
+            <!-- windows -->
+            <g fill="#FFFFFF" opacity="0.6">
+              <rect x="250" y="162" width="12" height="12" rx="2"/><rect x="270" y="162" width="12" height="12" rx="2"/><rect x="290" y="162" width="12" height="12" rx="2"/>
+              <rect x="250" y="182" width="12" height="12" rx="2"/><rect x="270" y="182" width="12" height="12" rx="2"/><rect x="290" y="182" width="12" height="12" rx="2"/>
+              <rect x="250" y="202" width="12" height="12" rx="2"/><rect x="290" y="202" width="12" height="12" rx="2"/>
+              <rect x="112" y="130" width="10" height="10" rx="2"/><rect x="130" y="130" width="10" height="10" rx="2"/><rect x="148" y="130" width="10" height="10" rx="2"/>
+              <rect x="112" y="148" width="10" height="10" rx="2"/><rect x="148" y="148" width="10" height="10" rx="2"/>
+              <rect x="416" y="150" width="10" height="10" rx="2"/><rect x="434" y="150" width="10" height="10" rx="2"/>
+              <rect x="416" y="168" width="10" height="10" rx="2"/><rect x="434" y="168" width="10" height="10" rx="2"/>
+            </g>
+            <!-- trees -->
+            <g>
+              <circle cx="212" cy="268" r="17" fill="#9AD8C6"/><rect x="209" y="276" width="6" height="14" rx="2" fill="#8C5A33"/>
+              <circle cx="600" cy="266" r="15" fill="#9AD8C6"/><rect x="597" y="274" width="6" height="14" rx="2" fill="#8C5A33"/>
+            </g>
+            <!-- road -->
+            <rect x="0" y="288" width="640" height="92" fill="#35544D"/>
+            <line x1="0" y1="332" x2="640" y2="332" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="26 22" opacity="0.45"/>
+          </g>
+          <!-- car -->
+          <g class="hero-car">
+            <ellipse cx="320" cy="352" rx="152" ry="9" fill="#0F3D36" opacity="0.22"/>
+            <!-- cabin -->
+            <path d="M226 268 C234 228 254 212 288 210 L362 210 C398 212 416 230 426 268 Z" fill="#0D9488"/>
+            <!-- rear window (two passengers) -->
+            <path d="M248 260 C254 234 268 223 290 222 L316 222 L316 260 Z" fill="#E8F6F1"/>
+            <!-- front window (driver) -->
+            <path d="M330 222 L358 222 C380 224 394 238 402 260 L330 260 Z" fill="#E8F6F1"/>
+            <!-- passengers -->
+            <g>
+              <circle cx="272" cy="234" r="5.4" fill="#123832"/>
+              <circle cx="272" cy="241" r="9.5" fill="#8C5A33"/>
+              <rect x="260" y="250" width="24" height="12" rx="6" fill="#F97362"/>
+              <circle cx="300" cy="241" r="9.5" fill="#C68B59"/>
+              <rect x="288" y="250" width="24" height="12" rx="6" fill="#F59E0B"/>
+            </g>
+            <!-- driver -->
+            <g>
+              <circle cx="366" cy="240" r="10" fill="#C68B59"/>
+              <rect x="353" y="250" width="26" height="12" rx="6" fill="#FFFFFF"/>
+            </g>
+            <!-- body -->
+            <rect x="190" y="262" width="262" height="60" rx="24" fill="#0D9488"/>
+            <rect x="190" y="306" width="262" height="16" rx="8" fill="#0B7268"/>
+            <rect x="322" y="276" width="20" height="5" rx="2.5" fill="#0B7268"/>
+            <rect x="252" y="276" width="20" height="5" rx="2.5" fill="#0B7268"/>
+            <rect x="440" y="272" width="12" height="15" rx="5" fill="#FDE9C8"/>
+            <rect x="190" y="272" width="10" height="14" rx="4" fill="#F97362"/>
+            <!-- wheels -->
+            <g>
+              <circle cx="252" cy="322" r="26" fill="#123832"/><circle cx="252" cy="322" r="11" fill="#DCEBE6"/><circle cx="252" cy="322" r="3.5" fill="#123832"/>
+              <circle cx="394" cy="322" r="26" fill="#123832"/><circle cx="394" cy="322" r="11" fill="#DCEBE6"/><circle cx="394" cy="322" r="3.5" fill="#123832"/>
+            </g>
+          </g>
+          <!-- route -->
+          <path id="routePath" d="M96 150 C200 58 420 164 540 86" fill="none" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 11"/>
+          <g transform="translate(84,118)">
+            <path d="M12 0C5.4 0 0 5.4 0 12c0 8 12 20 12 20s12-12 12-20C24 5.4 18.6 0 12 0z" fill="#F59E0B"/>
+            <circle cx="12" cy="12" r="6.6" fill="#fff"/>
+            <text x="12" y="15.6" text-anchor="middle" font-size="10" font-weight="800" fill="#123832">A</text>
+          </g>
+          <g transform="translate(528,54)">
+            <path d="M12 0C5.4 0 0 5.4 0 12c0 8 12 20 12 20s12-12 12-20C24 5.4 18.6 0 12 0z" fill="#F59E0B"/>
+            <circle cx="12" cy="12" r="6.6" fill="#fff"/>
+            <text x="12" y="15.6" text-anchor="middle" font-size="10" font-weight="800" fill="#123832">B</text>
+          </g>
+          <!-- coin -->
+          <g transform="translate(478,182)">
+            <g class="hero-coin">
+              <circle r="17" fill="#F59E0B"/>
+              <circle r="12.5" fill="#FDE9C8"/>
+              <text y="4.6" text-anchor="middle" font-size="14" font-weight="800" fill="#123832">₹</text>
+            </g>
+          </g>
+          <path d="M448 156l3.5 8 8 3.5-8 3.5-3.5 8-3.5-8-8-3.5 8-3.5z" fill="#F59E0B" opacity="0.7"/>
+        </svg>

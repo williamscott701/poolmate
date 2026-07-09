@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PoolMate — page not found</title>
+  <meta http-equiv="refresh" content="3;url=/poolmate/">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+      display: grid; place-items: center; min-height: 100vh; margin: 0;
+      background: #F0FBF7; color: #123832; text-align: center; padding: 24px;
+    }
+    a { color: #0B7268; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Wrong turn 🛣️</h1>
+    <p>Taking you back to <a href="/poolmate/">the PoolMate waitlist</a>…</p>
+  </div>
+  <script>
+    setTimeout(function () {
+      location.replace("/poolmate/" + location.search + location.hash);
+    }, 1200);
+  </script>
+</body>
+</html>

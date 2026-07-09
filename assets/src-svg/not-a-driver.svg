@@ -1,0 +1,43 @@
+<svg class="pos-art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="posArtTitle">
+          <title id="posArtTitle">A crossed-out taxi sign next to a commuter standing proudly by their own car with a friendly co-passenger</title>
+          <!-- crossed-out taxi -->
+          <g>
+            <circle cx="118" cy="150" r="78" fill="#F1F5F4"/>
+            <path d="M92 128l6-14c1.5-3.5 5-5.8 8.8-5.8h22.4c3.8 0 7.3 2.3 8.8 5.8l6 14z" fill="#94A3B8"/>
+            <rect x="80" y="126" width="76" height="34" rx="9" fill="#94A3B8"/>
+            <text x="118" y="149" text-anchor="middle" font-size="17" font-weight="800" fill="#fff" letter-spacing="2">TAXI</text>
+            <rect x="94" y="164" width="48" height="9" rx="4.5" fill="#CBD5E1"/>
+            <line x1="66" y1="206" x2="172" y2="94" stroke="#F97362" stroke-width="11" stroke-linecap="round"/>
+          </g>
+          <!-- commuter + own car -->
+          <g>
+            <ellipse cx="340" cy="312" rx="130" ry="9" fill="#0F3D36" opacity="0.14"/>
+            <!-- car front half, driving in from the right -->
+            <path d="M336 232 C342 204 358 192 384 190 L436 190 C462 192 474 206 480 232 Z" fill="#0D9488"/>
+            <path d="M352 226 C357 208 368 201 384 200 L410 200 L410 226 Z" fill="#E8F6F1"/>
+            <!-- waving co-passenger in window -->
+            <circle cx="384" cy="214" r="8" fill="#8C5A33"/>
+            <path d="M394 214c4-2 7-6 8-11" fill="none" stroke="#8C5A33" stroke-width="5" stroke-linecap="round"/>
+            <rect x="310" y="228" width="170" height="54" rx="20" fill="#0D9488"/>
+            <rect x="310" y="268" width="170" height="14" rx="7" fill="#0B7268"/>
+            <rect x="468" y="238" width="12" height="14" rx="5" fill="#FDE9C8"/>
+            <circle cx="368" cy="284" r="23" fill="#123832"/><circle cx="368" cy="284" r="10" fill="#DCEBE6"/>
+            <!-- commuter figure -->
+            <g>
+              <circle cx="284" cy="164" r="15" fill="#C68B59"/>
+              <path d="M284 148c-6 0-11 4-12 9 0-9 5-15 12-15s12 6 12 15c-1-5-6-9-12-9z" fill="#123832"/>
+              <rect x="266" y="180" width="36" height="56" rx="14" fill="#0F3D36"/>
+              <!-- waving arm -->
+              <path d="M270 192c-8 2-14-2-17-12" fill="none" stroke="#0F3D36" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="252" cy="177" r="6" fill="#C68B59"/>
+              <!-- laptop bag -->
+              <rect x="296" y="200" width="22" height="28" rx="5" fill="#F59E0B"/>
+              <path d="M300 200c0-6 4-9 8-9s8 3 8 9" fill="none" stroke="#B45309" stroke-width="3"/>
+              <!-- legs -->
+              <rect x="270" y="234" width="12" height="42" rx="6" fill="#123832"/>
+              <rect x="286" y="234" width="12" height="42" rx="6" fill="#123832"/>
+              <rect x="266" y="272" width="18" height="8" rx="4" fill="#8C5A33"/>
+              <rect x="284" y="272" width="18" height="8" rx="4" fill="#8C5A33"/>
+            </g>
+          </g>
+        </svg>
