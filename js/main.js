@@ -65,6 +65,7 @@
   var cityOtherField = $("#cityOtherField");
   var cityOtherInput = $("#f-city-other");
   var seatsGroup = $("#seatsGroup");
+  var moreDetails = $("#moreDetails");
   var failCount = 0;
   var draftWasRestored = false;
 
@@ -84,9 +85,12 @@
   } catch (e) { /* older browsers: skip attribution */ }
 
   /* --- role handling --- */
+  /* No role is pre-selected: it lives in the optional panel, so defaulting to
+     "owner" would silently label every quick signup as a car owner and ruin
+     the owner-vs-passenger split. Unanswered stays unanswered. */
   function currentRole() {
     var checked = form.querySelector('input[name="role"]:checked');
-    return checked ? checked.value : "owner";
+    return checked ? checked.value : "";
   }
   function applyRole() {
     var isOwner = currentRole() === "owner";
@@ -129,6 +133,7 @@
   function saveDraft() {
     try {
       var draft = {};
+      if (moreDetails.open) draft._expanded = 1;
       DRAFT_FIELDS.forEach(function (key) {
         var el = form.elements[key];
         if (!el) return;
@@ -144,6 +149,7 @@
       var raw = localStorage.getItem(LS_DRAFT);
       if (!raw) return;
       var draft = JSON.parse(raw);
+      if (draft._expanded) moreDetails.open = true;
       DRAFT_FIELDS.forEach(function (key) {
         if (!(key in draft)) return;
         var el = form.elements[key];
@@ -153,6 +159,8 @@
       draftWasRestored = true;
     } catch (e) { /* corrupt draft: ignore */ }
   }
+
+  moreDetails.addEventListener("toggle", function () { saveDraft(); });
 
   var saveTimer = null;
   form.addEventListener("input", function () {
@@ -225,6 +233,10 @@
     } else setFieldError("email", "");
 
     if (firstInvalid) {
+      /* name/email live in the collapsed panel — reveal it, or the visitor
+         gets an error they cannot see or reach */
+      var panel = firstInvalid.closest && firstInvalid.closest("details");
+      if (panel) panel.open = true;
       firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
       if (firstInvalid.focus) firstInvalid.focus({ preventScroll: true });
       return false;

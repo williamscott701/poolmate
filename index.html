@@ -506,42 +506,18 @@
   <section id="waitlist" class="section waitlist">
     <div class="container narrow">
       <h2 class="section-title reveal">Get early access</h2>
-      <p class="section-sub reveal d1">Just your number is enough — everything else is optional. We'll message you on WhatsApp when we go live in your area, and early birds lock in every perk above.</p>
+      <p class="section-sub reveal d1">Two taps and you're on the list — your number and your city. We'll message you on WhatsApp when we go live in your area, and early birds lock in every perk above.</p>
 
       <div class="form-card reveal d2">
         <form id="waitlistForm" novalidate>
-          <fieldset class="role-toggle">
-            <legend class="visually-hidden">I am joining as</legend>
-            <label class="role-option">
-              <input type="radio" name="role" value="owner" checked>
-              <span class="role-face"><svg class="icon" aria-hidden="true"><use href="#i-car"/></svg> Car owner</span>
-            </label>
-            <label class="role-option">
-              <input type="radio" name="role" value="passenger">
-              <span class="role-face"><svg class="icon" aria-hidden="true"><use href="#i-seat"/></svg> Passenger</span>
-            </label>
-          </fieldset>
-
           <div class="field">
             <label for="f-whatsapp">WhatsApp number</label>
             <div class="input-adorned">
               <span class="adorn">+91</span>
               <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="17" placeholder="98765 43210" required aria-describedby="whatsappHint">
             </div>
-            <p class="field-hint" id="whatsappHint">That's all we need to hold your spot. Everything below is optional.</p>
+            <p class="field-hint" id="whatsappHint">The only thing we actually need — it's how we'll tell you we've launched.</p>
             <p class="field-error" id="err-whatsapp" hidden></p>
-          </div>
-
-          <div class="field">
-            <label for="f-name">Your name <span class="label-soft">(optional)</span></label>
-            <input id="f-name" name="name" type="text" autocomplete="name" maxlength="50" placeholder="e.g., Priya Sharma">
-            <p class="field-error" id="err-name" hidden></p>
-          </div>
-
-          <div class="field">
-            <label for="f-email">Email <span class="label-soft">(optional)</span></label>
-            <input id="f-email" name="email" type="email" autocomplete="email" maxlength="80" placeholder="you@example.com">
-            <p class="field-error" id="err-email" hidden></p>
           </div>
 
           <fieldset class="field field-chips" id="cityGroup">
@@ -560,36 +536,67 @@
             <p class="field-error" id="err-city_other" hidden></p>
           </div>
 
-          <fieldset class="field field-chips" id="frequencyGroup">
-            <legend>How often do you commute? <span class="label-soft">(optional)</span></legend>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="frequency" value="1-2 days/week"><span>1–2 days/wk</span></label>
-              <label class="chip"><input type="radio" name="frequency" value="3-4 days/week"><span>3–4 days/wk</span></label>
-              <label class="chip"><input type="radio" name="frequency" value="5+ days/week"><span>5+ days/wk</span></label>
-              <label class="chip"><input type="radio" name="frequency" value="Occasionally"><span>Occasionally</span></label>
-            </div>
-            <p class="field-error" id="err-frequency" hidden></p>
-          </fieldset>
+          <details class="more-details" id="moreDetails">
+            <summary class="more-summary">
+              <span>Want better matches? Add a few details <span class="label-soft">— all optional</span></span>
+            </summary>
+            <div class="more-body">
+              <fieldset class="role-toggle">
+                <legend class="visually-hidden">I am joining as</legend>
+                <label class="role-option">
+                  <input type="radio" name="role" value="owner">
+                  <span class="role-face"><svg class="icon" aria-hidden="true"><use href="#i-car"/></svg> Car owner</span>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="passenger">
+                  <span class="role-face"><svg class="icon" aria-hidden="true"><use href="#i-seat"/></svg> Passenger</span>
+                </label>
+              </fieldset>
 
-          <fieldset class="field field-chips field--owner" id="seatsGroup">
-            <legend>Empty seats in your car <span class="label-soft">(optional)</span></legend>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="seats" value="1"><span>1</span></label>
-              <label class="chip"><input type="radio" name="seats" value="2"><span>2</span></label>
-              <label class="chip"><input type="radio" name="seats" value="3"><span>3</span></label>
-              <label class="chip"><input type="radio" name="seats" value="4+"><span>4+</span></label>
-            </div>
-            <p class="field-error" id="err-seats" hidden></p>
-          </fieldset>
+              <div class="field">
+                <label for="f-name">Your name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" maxlength="50" placeholder="e.g., Priya Sharma">
+                <p class="field-error" id="err-name" hidden></p>
+              </div>
 
-          <fieldset class="field field-chips" id="rideWithGroup">
-            <legend>Ride with <span class="label-soft">(optional)</span></legend>
-            <div class="chips">
-              <label class="chip"><input type="radio" name="ride_with" value="Same gender"><span>Same gender only</span></label>
-              <label class="chip"><input type="radio" name="ride_with" value="Any"><span>Anyone</span></label>
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" maxlength="80" placeholder="you@example.com">
+                <p class="field-error" id="err-email" hidden></p>
+              </div>
+
+              <fieldset class="field field-chips" id="frequencyGroup">
+                <legend>How often do you commute?</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="frequency" value="1-2 days/week"><span>1–2 days/wk</span></label>
+                  <label class="chip"><input type="radio" name="frequency" value="3-4 days/week"><span>3–4 days/wk</span></label>
+                  <label class="chip"><input type="radio" name="frequency" value="5+ days/week"><span>5+ days/wk</span></label>
+                  <label class="chip"><input type="radio" name="frequency" value="Occasionally"><span>Occasionally</span></label>
+                </div>
+                <p class="field-error" id="err-frequency" hidden></p>
+              </fieldset>
+
+              <fieldset class="field field-chips field--owner" id="seatsGroup">
+                <legend>Empty seats in your car</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="seats" value="1"><span>1</span></label>
+                  <label class="chip"><input type="radio" name="seats" value="2"><span>2</span></label>
+                  <label class="chip"><input type="radio" name="seats" value="3"><span>3</span></label>
+                  <label class="chip"><input type="radio" name="seats" value="4+"><span>4+</span></label>
+                </div>
+                <p class="field-error" id="err-seats" hidden></p>
+              </fieldset>
+
+              <fieldset class="field field-chips" id="rideWithGroup">
+                <legend>Ride with</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="ride_with" value="Same gender"><span>Same gender only</span></label>
+                  <label class="chip"><input type="radio" name="ride_with" value="Any"><span>Anyone</span></label>
+                </div>
+                <p class="field-hint">We'll only ever match you within your preference.</p>
+              </fieldset>
             </div>
-            <p class="field-hint">We'll only ever match you within your preference.</p>
-          </fieldset>
+          </details>
 
           <div class="hp" aria-hidden="true">
             <label>Leave this field empty <input type="text" name="hp_note" tabindex="-1" autocomplete="off"></label>

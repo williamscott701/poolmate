@@ -563,6 +563,55 @@ a { color: var(--primary-dark); }
   color: var(--body);
 }
 
+/* progressive disclosure: phone + city are enough, everything else is
+   tucked behind this panel and stays optional once opened */
+.more-details {
+  margin: 0 0 18px;
+  border: 1.5px dashed var(--border);
+  border-radius: 12px;
+  background: var(--bg-tint);
+}
+.more-details[open] {
+  border-style: solid;
+  background: var(--bg);
+}
+.more-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  cursor: pointer;
+  list-style: none;
+}
+.more-summary::-webkit-details-marker { display: none; }
+.more-summary::before {
+  content: "+";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.more-details[open] .more-summary::before { content: "–"; }
+.more-summary:hover { color: var(--ink); }
+.more-body {
+  padding: 2px 16px 16px;
+  border-top: 1px solid var(--border);
+  margin-top: -2px;
+}
+.more-body .role-toggle { margin-top: 18px; }
+.more-body > .field:last-child { margin-bottom: 0; }
+
 fieldset.field {
   border: none;
   margin-inline: 0;
