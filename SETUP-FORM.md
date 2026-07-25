@@ -4,6 +4,13 @@ Signups POST to a Google Apps Script web app which appends each one as a row
 in a Google Sheet you own. Free, unlimited, and you can filter/sort by
 commute frequency later to see who travels often.
 
+> **Already deployed the first version of this script?** The site keeps working
+> as-is — nothing to do urgently. But that version writes a hard-coded list of
+> columns, so the newer `ride_with` answer arrives folded into the `source`
+> column instead of getting its own. Paste the script below over it (then
+> **Deploy → Manage deployments → ✏️ Edit → New version → Deploy**) and
+> `ride_with` gets a proper column, with existing rows left untouched.
+
 ## One-time setup
 
 1. **Create the Sheet**
@@ -11,38 +18,61 @@ commute frequency later to see who travels often.
 
 2. **Open Apps Script**
    In the Sheet: **Extensions → Apps Script**. Delete the placeholder code and
-   paste all of this:
+   paste all of this. It builds the header row from whatever the site sends, so
+   adding or removing a form field never needs a script edit again:
 
    ```js
    const SHEET_NAME = "Waitlist";
 
+   // Preferred column order for a brand-new sheet. Anything the site sends
+   // that isn't listed here gets appended as a new column automatically.
+   const FIELDS = [
+     "role", "name", "whatsapp", "email", "city", "city_other",
+     "frequency", "seats", "ride_with", "source",
+     "utm_source", "utm_medium", "utm_campaign",
+     "page_seconds", "submitted_at"
+   ];
+
    function doPost(e) {
      const lock = LockService.getScriptLock();
-     lock.tryLock(10000);
+     lock.tryLock(30000);
      try {
        const ss = SpreadsheetApp.getActiveSpreadsheet();
        const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
-       const HEADERS = [
-         "timestamp", "role", "name", "whatsapp", "email",
-         "city", "city_other", "route_from", "route_to",
-         "frequency", "seats", "source",
-         "utm_source", "utm_medium", "utm_campaign",
-         "page_seconds", "submitted_at"
-       ];
-       if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
-       const p = e.parameter;
-       sheet.appendRow([
-         new Date(),
-         p.role || "", p.name || "",
-         "'" + (p.whatsapp || ""),   // leading apostrophe keeps the number as text
-         p.email || "", p.city || "", p.city_other || "",
-         p.route_from || "", p.route_to || "",
-         p.frequency || "", p.seats || "", p.source || "",
-         p.utm_source || "", p.utm_medium || "", p.utm_campaign || "",
-         p.page_seconds || "", p.submitted_at || ""
-       ]);
+       const p = (e && e.parameter) || {};
+
+       // Read the existing header row, or create one on a fresh sheet.
+       let headers = sheet.getLastRow()
+         ? sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].filter(String)
+         : [];
+       if (!headers.length) {
+         headers = ["timestamp"].concat(FIELDS);
+         sheet.appendRow(headers);
+       }
+
+       // A field the sheet has never seen becomes a new column on the right,
+       // so a new question can never be silently dropped.
+       Object.keys(p).forEach(function (key) {
+         if (headers.indexOf(key) === -1 &&
+             headers.length < 40 && /^[a-z0-9_]{1,40}$/.test(key)) {
+           headers.push(key);
+           sheet.getRange(1, headers.length).setValue(key);
+         }
+       });
+
+       sheet.appendRow(headers.map(function (h) {
+         if (h === "timestamp") return new Date();
+         // leading apostrophe keeps the number as text, not a mangled number
+         if (h === "whatsapp") return "'" + (p.whatsapp || "");
+         return p[h] || "";
+       }));
+
        return ContentService
          .createTextOutput(JSON.stringify({ ok: true }))
+         .setMimeType(ContentService.MimeType.JSON);
+     } catch (err) {
+       return ContentService
+         .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
          .setMimeType(ContentService.MimeType.JSON);
      } finally {
        lock.releaseLock();
@@ -83,8 +113,17 @@ commute frequency later to see who travels often.
 - **The browser can't read the response.** The form POSTs with `mode: "no-cors"`
   because Apps Script doesn't send CORS headers. A resolved request is treated
   as success — so during launch week, sanity-check the Sheet daily.
-- **Don't rename the input fields** in `index.html` — the `name` attributes map
-  1:1 to the Sheet columns above.
+- **Input `name` attributes are the Sheet columns.** With the script above you
+  can add a question freely (it makes its own column), but renaming an existing
+  field starts a *new* column and leaves the old one behind.
+- **Only the WhatsApp number is required.** Every other column can legitimately
+  be blank — the page exists to measure interest, so nothing else blocks a
+  signup. Sort by `frequency` (blanks last) to find the frequent commuters.
+- **`source` carries extras.** It reads `landing-v2`, plus `ride_with=…` until
+  the script above is deployed, plus `flagged=honeypot|fast` on submissions that
+  tripped a bot check. Flagged rows are still saved on purpose — a false
+  positive must never cost a real signup — so filter them out rather than
+  trusting they were blocked.
 
 ## Alternatives
 

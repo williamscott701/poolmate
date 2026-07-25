@@ -123,6 +123,7 @@
           <li class="chip-static">0% commission for owners, year one</li>
           <li class="chip-static">₹100 ride credit for passengers</li>
           <li class="chip-static">Every 11th ride free</li>
+          <li class="chip-static">Ride with same gender, or anyone</li>
         </ul>
       </div>
       <div class="hero-visual reveal d2">
@@ -327,6 +328,7 @@
           <li><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> No detours, no duty — you drive your own route, on your own schedule</li>
           <li><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Co-travellers share costs; this is not a commercial service</li>
           <li><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Ride with the same verified regulars from your tech park or community</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-women"/></svg> <span>You pick who you ride with — <strong>same gender only, or anyone</strong></span></li>
         </ul>
       </div>
     </div>
@@ -504,7 +506,7 @@
   <section id="waitlist" class="section waitlist">
     <div class="container narrow">
       <h2 class="section-title reveal">Get early access</h2>
-      <p class="section-sub reveal d1">Takes 30 seconds. We'll message you on WhatsApp when we go live in your area — early birds lock in every perk above.</p>
+      <p class="section-sub reveal d1">Just your number is enough — everything else is optional. We'll message you on WhatsApp when we go live in your area, and early birds lock in every perk above.</p>
 
       <div class="form-card reveal d2">
         <form id="waitlistForm" novalidate>
@@ -521,18 +523,19 @@
           </fieldset>
 
           <div class="field">
-            <label for="f-name">Your name</label>
-            <input id="f-name" name="name" type="text" autocomplete="name" maxlength="50" placeholder="e.g., Priya Sharma">
-            <p class="field-error" id="err-name" hidden></p>
-          </div>
-
-          <div class="field">
             <label for="f-whatsapp">WhatsApp number</label>
             <div class="input-adorned">
               <span class="adorn">+91</span>
-              <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="17" placeholder="98765 43210">
+              <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="17" placeholder="98765 43210" required aria-describedby="whatsappHint">
             </div>
+            <p class="field-hint" id="whatsappHint">That's all we need to hold your spot. Everything below is optional.</p>
             <p class="field-error" id="err-whatsapp" hidden></p>
+          </div>
+
+          <div class="field">
+            <label for="f-name">Your name <span class="label-soft">(optional)</span></label>
+            <input id="f-name" name="name" type="text" autocomplete="name" maxlength="50" placeholder="e.g., Priya Sharma">
+            <p class="field-error" id="err-name" hidden></p>
           </div>
 
           <div class="field">
@@ -542,7 +545,7 @@
           </div>
 
           <fieldset class="field field-chips" id="cityGroup">
-            <legend>Your city</legend>
+            <legend>Your city <span class="label-soft">(optional)</span></legend>
             <div class="chips">
               <label class="chip"><input type="radio" name="city" value="Bangalore"><span>Bangalore</span></label>
               <label class="chip"><input type="radio" name="city" value="Hyderabad"><span>Hyderabad</span></label>
@@ -557,21 +560,8 @@
             <p class="field-error" id="err-city_other" hidden></p>
           </div>
 
-          <div class="field-pair">
-            <div class="field">
-              <label for="f-from">Usual route — from</label>
-              <input id="f-from" name="route_from" type="text" maxlength="60" placeholder="e.g., Whitefield">
-              <p class="field-error" id="err-route_from" hidden></p>
-            </div>
-            <div class="field">
-              <label for="f-to">to</label>
-              <input id="f-to" name="route_to" type="text" maxlength="60" placeholder="e.g., Manyata Tech Park" aria-label="Usual route — destination">
-              <p class="field-error" id="err-route_to" hidden></p>
-            </div>
-          </div>
-
           <fieldset class="field field-chips" id="frequencyGroup">
-            <legend>How often do you commute this route?</legend>
+            <legend>How often do you commute? <span class="label-soft">(optional)</span></legend>
             <div class="chips">
               <label class="chip"><input type="radio" name="frequency" value="1-2 days/week"><span>1–2 days/wk</span></label>
               <label class="chip"><input type="radio" name="frequency" value="3-4 days/week"><span>3–4 days/wk</span></label>
@@ -582,7 +572,7 @@
           </fieldset>
 
           <fieldset class="field field-chips field--owner" id="seatsGroup">
-            <legend>Empty seats in your car</legend>
+            <legend>Empty seats in your car <span class="label-soft">(optional)</span></legend>
             <div class="chips">
               <label class="chip"><input type="radio" name="seats" value="1"><span>1</span></label>
               <label class="chip"><input type="radio" name="seats" value="2"><span>2</span></label>
@@ -592,10 +582,19 @@
             <p class="field-error" id="err-seats" hidden></p>
           </fieldset>
 
+          <fieldset class="field field-chips" id="rideWithGroup">
+            <legend>Ride with <span class="label-soft">(optional)</span></legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="ride_with" value="Same gender"><span>Same gender only</span></label>
+              <label class="chip"><input type="radio" name="ride_with" value="Any"><span>Anyone</span></label>
+            </div>
+            <p class="field-hint">We'll only ever match you within your preference.</p>
+          </fieldset>
+
           <div class="hp" aria-hidden="true">
-            <label>Company <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+            <label>Leave this field empty <input type="text" name="hp_note" tabindex="-1" autocomplete="off"></label>
           </div>
-          <input type="hidden" name="source" value="landing-v1">
+          <input type="hidden" name="source" value="landing-v2">
           <input type="hidden" name="submitted_at" value="">
           <input type="hidden" name="utm_source" value="">
           <input type="hidden" name="utm_medium" value="">
@@ -615,7 +614,7 @@
         <div class="form-success" id="formSuccess" role="status" aria-live="polite" tabindex="-1" hidden>
           <svg class="icon icon-xl success-icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
           <h3>You're in!</h3>
-          <p>We'll ping you on WhatsApp when <span data-app-name>PoolMate</span> goes live on your route. Want to move up the list? Every friend you refer bumps you ahead.</p>
+          <p>We'll ping you on WhatsApp when <span data-app-name>PoolMate</span> goes live in your area. Want to move up the list? Every friend you refer bumps you ahead.</p>
           <a class="btn btn-whatsapp" id="shareBtn" href="#" target="_blank" rel="noopener">
             <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg> Share on WhatsApp
           </a>
@@ -647,7 +646,7 @@
         </details>
         <details class="faq-item">
           <summary><svg class="icon" aria-hidden="true"><use href="#i-women"/></svg> What about women's safety?</summary>
-          <p>Safety is designed in, not bolted on: verified-only profiles, a women-only ride option for both owners and passengers, live trip sharing, and an in-app SOS. Women on the waitlist get early access to the women-only pool.</p>
+          <p>Safety is designed in, not bolted on. Every member sets a <strong>“Ride with”</strong> preference — <strong>same gender only</strong> or <strong>anyone</strong> — and we only ever match you within it. That works for owners and passengers alike, alongside verified-only profiles, live trip sharing, and an in-app SOS. Tell us your preference on the waitlist and we'll honour it from your very first ride.</p>
         </details>
         <details class="faq-item">
           <summary><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Is carpooling even legal in India?</summary>

@@ -2,7 +2,8 @@
 
 Static landing page for **PoolMate**, a carpooling network for daily commuters
 (car owners are fellow commuters, not drivers). Collects role-split waitlist
-signups (Car Owner / Passenger) with route, city, and commute frequency —
+signups (Car Owner / Passenger) with city, commute frequency, and ride-with
+preference — the WhatsApp number is the only required field —
 launching first in **Bangalore & Hyderabad**.
 
 **Live:** https://williamscott701.github.io/poolmate/

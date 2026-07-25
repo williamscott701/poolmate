@@ -124,7 +124,7 @@
   });
 
   /* --- draft persistence --- */
-  var DRAFT_FIELDS = ["role", "name", "whatsapp", "email", "city", "city_other", "route_from", "route_to", "frequency", "seats"];
+  var DRAFT_FIELDS = ["role", "name", "whatsapp", "email", "city", "city_other", "frequency", "seats", "ride_with"];
 
   function saveDraft() {
     try {
@@ -205,52 +205,24 @@
       if (!firstInvalid && focusEl) firstInvalid = focusEl;
     }
 
-    var name = form.elements.name.value.trim();
-    if (name.length < 2 || name.length > 50 || !NAME_RE.test(name)) {
-      fail("name", "Please enter your name", form.elements.name);
-    } else setFieldError("name", "");
-
+    /* The WhatsApp number is the only required field — this page exists to
+       gauge interest, so nothing else may block a signup. */
     var phone = normalizeWhatsApp(form.elements.whatsapp.value);
     if (!/^[6-9]\d{9}$/.test(phone)) {
       fail("whatsapp", "Enter a valid 10-digit mobile number", form.elements.whatsapp);
     } else setFieldError("whatsapp", "");
 
+    /* Optional fields: only reject content that is clearly malformed, never
+       content that is simply absent. */
+    var name = form.elements.name.value.trim();
+    if (name && (name.length < 2 || name.length > 50 || !NAME_RE.test(name))) {
+      fail("name", "That name doesn't look right", form.elements.name);
+    } else setFieldError("name", "");
+
     var email = form.elements.email.value.trim();
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       fail("email", "That email doesn't look right", form.elements.email);
     } else setFieldError("email", "");
-
-    var city = form.querySelector('input[name="city"]:checked');
-    if (!city) {
-      fail("city", "Pick your city", form.querySelector('input[name="city"]'));
-    } else setFieldError("city", "");
-
-    if (city && city.value === "Other") {
-      var other = cityOtherInput.value.trim();
-      if (other.length < 2) {
-        fail("city_other", "Tell us which city", cityOtherInput);
-      } else setFieldError("city_other", "");
-    }
-
-    var from = form.elements.route_from.value.trim();
-    if (from.length < 2) {
-      fail("route_from", "Where does your commute start?", form.elements.route_from);
-    } else setFieldError("route_from", "");
-
-    var to = form.elements.route_to.value.trim();
-    if (to.length < 2) {
-      fail("route_to", "Where does it end?", form.elements.route_to);
-    } else if (from && to.toLowerCase() === from.toLowerCase()) {
-      fail("route_to", "From and to look the same — double-check?", form.elements.route_to);
-    } else setFieldError("route_to", "");
-
-    if (!form.querySelector('input[name="frequency"]:checked')) {
-      fail("frequency", "How often do you travel this route?", form.querySelector('input[name="frequency"]'));
-    } else setFieldError("frequency", "");
-
-    if (currentRole() === "owner" && !form.querySelector('input[name="seats"]:checked')) {
-      fail("seats", "How many seats can you share?", form.querySelector('input[name="seats"]'));
-    } else setFieldError("seats", "");
 
     if (firstInvalid) {
       firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -261,7 +233,7 @@
   }
 
   /* --- submission --- */
-  function buildParams() {
+  function buildParams(flag) {
     var params = new URLSearchParams();
     params.set("role", currentRole());
     params.set("name", form.elements.name.value.trim());
@@ -270,13 +242,22 @@
     var city = form.querySelector('input[name="city"]:checked');
     params.set("city", city ? city.value : "");
     params.set("city_other", cityOtherInput.disabled ? "" : cityOtherInput.value.trim());
-    params.set("route_from", form.elements.route_from.value.trim());
-    params.set("route_to", form.elements.route_to.value.trim());
     var freq = form.querySelector('input[name="frequency"]:checked');
     params.set("frequency", freq ? freq.value : "");
     var seats = form.querySelector('input[name="seats"]:checked');
     params.set("seats", currentRole() === "owner" && seats ? seats.value : "");
-    params.set("source", form.elements.source.value);
+    var rideWith = form.querySelector('input[name="ride_with"]:checked');
+    params.set("ride_with", rideWith ? rideWith.value : "");
+
+    /* The Apps Script currently deployed writes a fixed list of columns, so a
+       newly added field like ride_with would be dropped on the way to the
+       Sheet. Fold it — and any spam flag — into `source`, which that script
+       does record, so no answer is ever lost. SETUP-FORM.md carries an updated
+       script that gives every field its own column. */
+    var source = form.elements.source.value;
+    if (rideWith) source += "; ride_with=" + rideWith.value;
+    if (flag) source += "; flagged=" + flag;
+    params.set("source", source);
     params.set("utm_source", form.elements.utm_source.value);
     params.set("utm_medium", form.elements.utm_medium.value);
     params.set("utm_campaign", form.elements.utm_campaign.value);
@@ -315,17 +296,15 @@
     });
   }
 
-  function showSuccess(persist) {
+  function showSuccess() {
     form.hidden = true;
     formSuccess.hidden = false;
     formSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
     formSuccess.focus({ preventScroll: true });
-    if (persist !== false) {
-      try {
-        localStorage.removeItem(LS_DRAFT);
-        localStorage.setItem(LS_DONE, "1");
-      } catch (e) { /* ignore */ }
-    }
+    try {
+      localStorage.removeItem(LS_DRAFT);
+      localStorage.setItem(LS_DONE, "1");
+    } catch (e) { /* ignore */ }
   }
 
   function showFailure() {
@@ -344,18 +323,15 @@
     event.preventDefault();
     if (form.dataset.submitting) return;
 
-    /* spam checks: honeypot + implausibly fast submit (unless a saved
-       draft was restored, in which case a fast real submit is plausible).
-       Show the same success UI so bots don't learn to adapt, but DON'T
-       persist it — a false positive (e.g. autofill silently filling the
-       honeypot) must not permanently lock a real visitor out of the form. */
-    var tooFast = !draftWasRestored && (Date.now() - loadedAt) < 3000;
-    if (form.elements.company.value || tooFast) {
-      showSuccess(false);
-      return;
-    }
-
     if (!validate()) return;
+
+    /* Spam signals are recorded, never used to block. The form is down to one
+       required field, so a real visitor can genuinely submit within a second,
+       and an autofilled honeypot must never cost us a signup. Flagged rows are
+       tagged in `source` so they can be filtered out in the Sheet instead. */
+    var flag = form.elements.hp_note.value ? "honeypot"
+      : (!draftWasRestored && (Date.now() - loadedAt) < 1200) ? "fast"
+      : "";
 
     form.dataset.submitting = "1";
     submitBtn.disabled = true;
@@ -367,9 +343,9 @@
        a rejection instead of an uncaught exception that would skip .catch()
        and leave the button permanently stuck on "Joining…". */
     Promise.resolve()
-      .then(function () { return send(buildParams()); })
+      .then(function () { return send(buildParams(flag)); })
       .then(function () {
-        showSuccess(true);
+        showSuccess();
       })
       .catch(function (err) {
         if (window.console && console.warn) console.warn("Waitlist submit failed:", err);
