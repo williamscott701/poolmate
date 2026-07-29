@@ -18,6 +18,20 @@
   /* ---------- brand injection ---------- */
   $$("[data-app-name]").forEach(function (el) { el.textContent = APP_NAME; });
 
+  /* ---------- "Get the app" reveal (driven by APP_DOWNLOAD in config.js) ---------- */
+  if (typeof APP_DOWNLOAD !== "undefined" && APP_DOWNLOAD.apkUrl) {
+    var appSection = $("#get-app");
+    var apkBtn = $("#apkDownloadBtn");
+    if (appSection && apkBtn) {
+      apkBtn.href = APP_DOWNLOAD.apkUrl;
+      if (APP_DOWNLOAD.sha256) {
+        var sumEl = $("#apkChecksum");
+        if (sumEl) sumEl.textContent = " SHA-256: " + APP_DOWNLOAD.sha256;
+      }
+      appSection.hidden = false;
+    }
+  }
+
   /* ---------- scroll reveals ---------- */
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {

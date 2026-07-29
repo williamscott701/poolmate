@@ -21,3 +21,12 @@ const FORM_CONFIG = {
   // Web3Forms access_key (see SETUP-FORM.md). Leave empty for Apps Script.
   extraFields: null
 };
+
+// "Get the app" section. Set apkUrl to reveal it on the page — typically the
+// GitHub Release asset, e.g.
+// "https://github.com/williamscott701/poolmate-app/releases/latest/download/poolmate.apk".
+// sha256 (optional) is shown so cautious users can verify their download.
+const APP_DOWNLOAD = {
+  apkUrl: "",
+  sha256: ""
+};

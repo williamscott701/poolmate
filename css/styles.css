@@ -811,3 +811,14 @@ html:not(.no-js) .reveal.d4 { transition-delay: 0.32s; }
     transition: none;
   }
 }
+
+/* ---------- get the app ---------- */
+
+.get-app { background: var(--bg-tint); }
+.get-app .section-sub { max-width: 46ch; }
+.app-note {
+  font-size: 0.875rem;
+  color: var(--body);
+  max-width: 52ch;
+  margin: 14px auto 0;
+}
