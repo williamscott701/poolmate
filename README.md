@@ -38,11 +38,12 @@ python3 -m http.server 4173
    error (drafts are kept in the visitor's browser, but nothing is stored).
 2. Optionally set `fallbackWhatsApp` in `js/config.js` so visitors whose
    submissions fail can WhatsApp you directly.
-3. **og:image (recommended before marketing pushes)** — WhatsApp/LinkedIn
-   link previews don't render SVG. Export a 1200×630 PNG of the hero and add
-   `<meta property="og:image" content="https://williamscott701.github.io/poolmate/assets/og.png">`.
+3. ~~og:image~~ Done — `assets/og.png` (1200×630) is wired into the meta tags,
+   so WhatsApp/LinkedIn link previews show the branded card. `assets/`
+   also carries `apple-touch-icon.png` for iOS home-screen bookmarks.
 4. Campaign links: append `?utm_source=...&utm_medium=...&utm_campaign=...`
-   — the values are captured into each signup row automatically.
+   — the values are captured into each signup row automatically (the 404
+   page preserves them too).
 
 ## Renaming the app later
 

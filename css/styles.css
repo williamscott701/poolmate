@@ -538,7 +538,7 @@ a { color: var(--primary-dark); }
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
 .field input[aria-invalid="true"] { border-color: var(--error); }
-.field input::placeholder { color: #7C948D; }
+.field input::placeholder { color: #5F7A73; }
 
 .input-adorned {
   display: flex;
