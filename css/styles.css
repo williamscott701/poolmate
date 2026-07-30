@@ -822,3 +822,22 @@ html:not(.no-js) .reveal.d4 { transition-delay: 0.32s; }
   max-width: 52ch;
   margin: 14px auto 0;
 }
+
+/* ---------- legal pages (privacy, deletion) ---------- */
+
+.legal h1 {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.legal h2 {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.4em;
+}
+.legal-meta { font-size: 0.875rem; color: var(--body); margin-bottom: 2em; }
+.legal ul, .legal ol { padding-left: 1.25em; margin: 0 0 1em; }
+.legal li { margin-bottom: 0.5em; }
+.legal a { font-weight: 600; }
+.site-footer a { color: #A7D9CE; }
