@@ -1,0 +1,16 @@
+{
+  "name": "PoolMate",
+  "short_name": "PoolMate",
+  "description": "Share your commute. Split the cost. Carpooling for daily commuters in Bangalore & Hyderabad.",
+  "start_url": "/poolmate/",
+  "display": "browser",
+  "theme_color": "#0D9488",
+  "background_color": "#F0FBF7",
+  "icons": [
+    {
+      "src": "/poolmate/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

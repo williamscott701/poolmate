@@ -17,6 +17,10 @@ const FORM_CONFIG = {
   // If submissions keep failing for a visitor, we offer this as a direct fallback.
   fallbackWhatsApp: "",
 
+  // Fallback contact if submissions keep failing and no WhatsApp number is
+  // set above. Also the address shown on the privacy page.
+  contactEmail: "williamscott701@gmail.com",
+
   // Optional: extra key/value pairs sent with every submission — e.g. a
   // Web3Forms access_key (see SETUP-FORM.md). Leave empty for Apps Script.
   extraFields: null

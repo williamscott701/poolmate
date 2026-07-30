@@ -10,13 +10,39 @@
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
 
-  var LS_PREFIX = (typeof APP_NAME === "string" ? APP_NAME.toLowerCase() : "poolmate");
+  /* config.js can fail to load (404, blocked); fall back so the page — and
+     above all the form — keeps working instead of dying on a ReferenceError. */
+  var APP = (typeof APP_NAME === "string" && APP_NAME) ? APP_NAME : "PoolMate";
+  var CFG = (typeof FORM_CONFIG === "object" && FORM_CONFIG) ? FORM_CONFIG : {};
+
+  /* ---------- analytics (provider optional) ---------- */
+  /* Dispatches to whichever provider script is on the page; silent no-op when
+     none is loaded. Must never be able to break page behavior. */
+  function track(name, props) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: name, title: JSON.stringify(props || {}), event: true });
+      } else if (window.plausible) {
+        window.plausible(name, { props: props || {} });
+      } else if (window.gtag) {
+        window.gtag("event", name, props || {});
+      }
+    } catch (e) { /* ignore */ }
+  }
+  window.addEventListener("error", function (event) {
+    track("js_error", {
+      message: String(event.message || "").slice(0, 200),
+      source: (event.filename || "") + ":" + (event.lineno || 0)
+    });
+  });
+
+  var LS_PREFIX = APP.toLowerCase();
   var LS_DRAFT = LS_PREFIX + "_waitlist_draft";
   var LS_DONE = LS_PREFIX + "_waitlist_done";
   var loadedAt = Date.now();
 
   /* ---------- brand injection ---------- */
-  $$("[data-app-name]").forEach(function (el) { el.textContent = APP_NAME; });
+  $$("[data-app-name]").forEach(function (el) { el.textContent = APP; });
 
   /* ---------- "Get the app" reveal (driven by APP_DOWNLOAD in config.js) ---------- */
   if (typeof APP_DOWNLOAD !== "undefined" && APP_DOWNLOAD.apkUrl) {
@@ -24,6 +50,7 @@
     var apkBtn = $("#apkDownloadBtn");
     if (appSection && apkBtn) {
       apkBtn.href = APP_DOWNLOAD.apkUrl;
+      apkBtn.addEventListener("click", function () { track("apk_download_click"); });
       if (APP_DOWNLOAD.sha256) {
         var sumEl = $("#apkChecksum");
         if (sumEl) sumEl.textContent = " SHA-256: " + APP_DOWNLOAD.sha256;
@@ -84,12 +111,13 @@
   var draftWasRestored = false;
 
   var pageUrl = location.origin + location.pathname;
-  var shareText = "I just joined the " + APP_NAME + " waitlist — carpooling for daily commuters, launching in Bangalore & Hyderabad. Share your ride, split fuel costs. Join me: " + pageUrl;
+  var shareText = "I just joined the " + APP + " waitlist — carpooling for daily commuters, launching in Bangalore & Hyderabad. Share your ride, split fuel costs. Join me: " + pageUrl;
   if (shareBtn) {
     shareBtn.href = "https://wa.me/?text=" + encodeURIComponent(shareText);
+    shareBtn.addEventListener("click", function () { track("share_whatsapp_click"); });
   }
 
-  /* --- capture UTM params for Sunil's channel attribution --- */
+  /* --- capture UTM params for channel attribution --- */
   try {
     var qs = new URLSearchParams(location.search);
     ["utm_source", "utm_medium", "utm_campaign"].forEach(function (key) {
@@ -196,12 +224,20 @@
       errEl.hidden = !message;
     }
     if (target && target.setAttribute) {
+      /* Some fields (e.g. whatsapp) already have a hint wired up via
+         aria-describedby; remember it so the error id is appended to it
+         rather than replacing it, and so clearing restores it. */
+      if (target.dataset && !("baseDescribedby" in target.dataset)) {
+        target.dataset.baseDescribedby = target.getAttribute("aria-describedby") || "";
+      }
+      var base = (target.dataset && target.dataset.baseDescribedby) || "";
       if (message) {
         target.setAttribute("aria-invalid", "true");
-        if (errEl) target.setAttribute("aria-describedby", errEl.id);
+        if (errEl) target.setAttribute("aria-describedby", (base ? base + " " : "") + errEl.id);
       } else {
         target.removeAttribute("aria-invalid");
-        target.removeAttribute("aria-describedby");
+        if (base) target.setAttribute("aria-describedby", base);
+        else target.removeAttribute("aria-describedby");
       }
     }
   }
@@ -289,26 +325,29 @@
     params.set("utm_campaign", form.elements.utm_campaign.value);
     params.set("page_seconds", String(Math.round((Date.now() - loadedAt) / 1000)));
     params.set("submitted_at", new Date().toISOString());
-    if (FORM_CONFIG.extraFields) {
-      Object.keys(FORM_CONFIG.extraFields).forEach(function (key) {
-        params.set(key, FORM_CONFIG.extraFields[key]);
+    if (CFG.extraFields) {
+      Object.keys(CFG.extraFields).forEach(function (key) {
+        params.set(key, CFG.extraFields[key]);
       });
     }
     return params;
   }
 
   function send(params) {
-    var endpoint = FORM_CONFIG.endpoint;
-    var provider = FORM_CONFIG.provider;
+    var endpoint = CFG.endpoint;
     if (!endpoint || endpoint.indexOf("PASTE_") === 0) {
       return Promise.reject(new Error("Form endpoint is not configured — see SETUP-FORM.md"));
     }
-    if (provider === "apps-script") {
-      // Apps Script web apps don't send CORS headers; a no-cors simple POST
-      // still reaches doPost(e). The response is opaque, so a resolved fetch
-      // is our success signal.
-      return fetch(endpoint, { method: "POST", mode: "no-cors", body: params });
-    }
+    /* Works for Apps Script too: web apps deployed for "Anyone" are
+       CORS-readable — the POST to /exec 302-redirects to
+       script.googleusercontent.com and both hops send
+       Access-Control-Allow-Origin: *, so fetch follows and reads the JSON.
+       A failed/revoked deployment comes back WITHOUT that header, so the
+       fetch rejects and the visitor sees the error instead of a false
+       success. The URLSearchParams body keeps this a "simple request" —
+       do not add non-safelisted headers (e.g. Content-Type:
+       application/json): that triggers a CORS preflight, and Apps Script
+       never answers OPTIONS. */
     return fetch(endpoint, {
       method: "POST",
       body: params,
@@ -316,7 +355,7 @@
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (data) {
         if (!res.ok || data.ok === false || data.success === false) {
-          throw new Error("Submission rejected");
+          throw new Error("Submission rejected (HTTP " + res.status + ")");
         }
       });
     });
@@ -336,11 +375,21 @@
   function showFailure() {
     failCount += 1;
     formError.hidden = false;
-    if (failCount >= 2 && FORM_CONFIG.fallbackWhatsApp) {
-      var link = "https://wa.me/" + FORM_CONFIG.fallbackWhatsApp +
-        "?text=" + encodeURIComponent("Hi! I want to join the " + APP_NAME + " waitlist.");
-      formError.querySelector("p").innerHTML =
-        'Still not going through. You can also <a href="' + link + '" target="_blank" rel="noopener">WhatsApp us your details directly</a>.';
+    /* After a second failure, offer a human escalation path: WhatsApp when a
+       number is configured, otherwise email. */
+    if (failCount >= 2) {
+      var contact = "";
+      if (CFG.fallbackWhatsApp) {
+        var link = "https://wa.me/" + CFG.fallbackWhatsApp +
+          "?text=" + encodeURIComponent("Hi! I want to join the " + APP + " waitlist.");
+        contact = '<a href="' + link + '" target="_blank" rel="noopener">WhatsApp us your details directly</a>';
+      } else if (CFG.contactEmail) {
+        contact = '<a href="mailto:' + CFG.contactEmail +
+          "?subject=" + encodeURIComponent(APP + " waitlist signup") + '">email us your WhatsApp number</a>';
+      }
+      if (contact) {
+        formError.querySelector("p").innerHTML = "Still not going through. You can also " + contact + ".";
+      }
     }
     formError.scrollIntoView({ behavior: "smooth", block: "center" });
   }
@@ -363,6 +412,7 @@
     submitBtn.disabled = true;
     btnLabel.textContent = "Joining…";
     formError.hidden = true;
+    track("waitlist_submit_attempt", { role: currentRole() || "unset", flagged: flag || "none" });
 
     /* Promise.resolve().then(...) ensures a synchronous throw inside
        buildParams()/send() (e.g. no URLSearchParams/fetch support) becomes
@@ -371,10 +421,15 @@
     Promise.resolve()
       .then(function () { return send(buildParams(flag)); })
       .then(function () {
+        track("waitlist_submit_success", { role: currentRole() || "unset" });
         showSuccess();
       })
       .catch(function (err) {
         if (window.console && console.warn) console.warn("Waitlist submit failed:", err);
+        track("waitlist_submit_failure", {
+          error: String((err && err.message) || err).slice(0, 200),
+          attempt: failCount + 1
+        });
         showFailure();
       })
       .then(function () {
@@ -393,6 +448,7 @@
     formSuccess.hidden = false;
     var heading = formSuccess.querySelector("h3");
     if (heading) heading.textContent = "You're already on the list!";
+    track("waitlist_already_done");
   } else {
     restoreDraft();
   }

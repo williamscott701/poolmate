@@ -110,9 +110,14 @@ commute frequency later to see who travels often.
 - **Edited the script? You must re-deploy.** Apps Script keeps serving the old
   code until you do **Deploy → Manage deployments → ✏️ Edit → Version: New
   version → Deploy**. This is the #1 "it stopped working" cause.
-- **The browser can't read the response.** The form POSTs with `mode: "no-cors"`
-  because Apps Script doesn't send CORS headers. A resolved request is treated
-  as success — so during launch week, sanity-check the Sheet daily.
+- **The browser reads the response.** The form does a normal CORS POST: Apps
+  Script web apps deployed for "Anyone" send `Access-Control-Allow-Origin: *`
+  on both the `/exec` redirect and the JSON it lands on, so the page checks
+  the `{ "ok": true }` reply and shows the visitor an error when the endpoint
+  is broken or the script reports failure. Two caveats: keep the deployment
+  access on "Anyone" (a login redirect has no CORS header and reads as
+  failure — which is the correct signal), and still sanity-check the Sheet
+  during launch week.
 - **Input `name` attributes are the Sheet columns.** With the script above you
   can add a question freely (it makes its own column), but renaming an existing
   field starts a *new* column and leaves the old one behind.

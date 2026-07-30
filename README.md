@@ -21,7 +21,8 @@ js/config.js      ← the ONLY file to edit at launch (form endpoint)
 js/main.js        form logic, validation, drafts, reveals
 assets/src-svg/   standalone editable copies of the big illustrations
 SETUP-FORM.md     wire the form to a Google Sheet (~5 min)
-404.html          redirects lost visitors back home
+404.html          real 404 page with a UTM-preserving link back home
+sitemap.xml       absolute URLs for the three indexable pages
 ```
 
 ## Run locally
@@ -33,13 +34,15 @@ python3 -m http.server 4173
 
 ## Before you share the link (launch checklist)
 
-1. **Wire the form** — follow [SETUP-FORM.md](SETUP-FORM.md), paste the
-   Apps Script URL into `js/config.js`. Until then, submissions show an
-   error (drafts are kept in the visitor's browser, but nothing is stored).
+1. ~~Wire the form~~ Done — the Apps Script URL is in `js/config.js`, and the
+   page reads the script's JSON reply, so a broken endpoint shows the visitor
+   an error instead of a false success.
 2. Optionally set `fallbackWhatsApp` in `js/config.js` so visitors whose
-   submissions fail can WhatsApp you directly.
-3. ~~og:image~~ Done — `assets/og.png` (1200×630) is wired into the meta tags,
-   so WhatsApp/LinkedIn link previews show the branded card. `assets/`
+   submissions fail can WhatsApp you directly (until then they're offered
+   `contactEmail` instead).
+3. ~~og:image~~ Done — `assets/og.jpg` (1200×630, 122 KB — WhatsApp won't
+   fetch previews much past 300 KB) is wired into the meta tags, so
+   WhatsApp/LinkedIn link previews show the branded card. `assets/`
    also carries `apple-touch-icon.png` for iOS home-screen bookmarks.
 4. Campaign links: append `?utm_source=...&utm_medium=...&utm_campaign=...`
    — the values are captured into each signup row automatically (the 404
