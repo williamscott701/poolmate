@@ -6,7 +6,7 @@ signups (Car Owner / Passenger) with city, commute frequency, and ride-with
 preference — the WhatsApp number is the only required field —
 launching first in **Bangalore & Hyderabad**.
 
-**Live:** https://williamscott701.github.io/poolmate/
+**Live:** https://poolmateapp.com/
 
 ## Stack
 

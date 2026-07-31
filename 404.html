@@ -7,9 +7,9 @@
   <meta name="description" content="That page doesn't exist. Head back to the PoolMate waitlist.">
   <meta name="robots" content="noindex">
   <!-- Absolute paths throughout: GitHub Pages serves this page for every
-       broken URL under /poolmate/, so relative URLs would resolve against
+       broken URL on the domain, so relative URLs would resolve against
        whatever path the visitor mistyped. -->
-  <link rel="icon" type="image/svg+xml" href="/poolmate/assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
@@ -23,13 +23,13 @@
   <div>
     <h1>Wrong turn 🛣️</h1>
     <p>That page doesn't exist — maybe the link was mistyped.</p>
-    <p>The <a id="homeLink" href="/poolmate/">PoolMate waitlist</a> is this way.</p>
+    <p>The <a id="homeLink" href="/">PoolMate waitlist</a> is this way.</p>
   </div>
   <script>
     // Carry campaign tags and anchors through to the homepage link. No
     // auto-redirect: a visible 404 leaves the broken URL in the address bar
     // (and in analytics, once wired up), so bad inbound links stay findable.
-    document.getElementById("homeLink").href = "/poolmate/" + location.search + location.hash;
+    document.getElementById("homeLink").href = "/" + location.search + location.hash;
   </script>
 </body>
 </html>
