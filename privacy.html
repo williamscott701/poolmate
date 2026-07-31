@@ -53,18 +53,22 @@
         agreed to ride with can reach you.</li>
       <li><strong>Your gender</strong> — used only to honour the "Ride with"
         preference (same gender only, or anyone). See below.</li>
-      <li><strong>Your commute</strong> — home area, work area, the routes and times
-        you post or request, and your ride preferences.</li>
+      <li><strong>Your rides</strong> — the pickup and drop locations, dates and times
+        you post or search, and your ride preferences.</li>
       <li><strong>Your car</strong> — brand, model, seat count and registration
         number, if you drive.</li>
+      <li><strong>Verification</strong> — a selfie (your profile photo, shown to
+        co-travellers) and your work email address, which we verify with a
+        one-time code and never display to anyone.</li>
       <li><strong>Activity in the app</strong> — bookings, messages with people you
         are matched with, completed rides, and your credit balance.</li>
-      <li><strong>Sign-in identity</strong> — your Google account email, used only to
-        sign you in.</li>
+      <li><strong>Sign-in identity</strong> — your mobile number, used to sign you
+        in and as your WhatsApp contact for approved co-travellers.</li>
     </ul>
     <p>
       We do not collect background location. The app does not track where you are;
-      it works from the areas you choose yourself.
+      your location is used only if you press the ride-day SOS button (shared with
+      your emergency contact) or to show walking distances, and never stored.
     </p>
 
     <h2>What other people can see</h2>
@@ -100,9 +104,11 @@
     </ul>
     <p>
       Our data is stored with Supabase (Postgres hosted in Mumbai, India), which
-      processes it solely on our instructions. Google provides sign-in, and
-      waitlist signups from this website are stored in Google Sheets (see the
-      next section). Those are the only third parties involved.
+      processes it solely on our instructions. Sign-in uses your mobile number,
+      and waitlist signups from this website are stored in Google Sheets (see the
+      next section). Map search and walking distances use OpenStreetMap-based
+      services (Photon, OSRM), which receive only the locations you search —
+      never your name or number. Those are the only third parties involved.
     </p>
 
     <h2>This website (the waitlist)</h2>
