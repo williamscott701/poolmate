@@ -111,7 +111,7 @@
   var draftWasRestored = false;
 
   var pageUrl = location.origin + location.pathname;
-  var shareText = "I just joined the " + APP + " waitlist — carpooling for daily commuters, launching in Bangalore & Hyderabad. Share your ride, split fuel costs. Join me: " + pageUrl;
+  var shareText = "I just joined the " + APP + " waitlist — sharing is caring. Carpooling in Bangalore & Hyderabad. Share the ride, split fuel costs. Join me: " + pageUrl;
   if (shareBtn) {
     shareBtn.href = "https://wa.me/?text=" + encodeURIComponent(shareText);
     shareBtn.addEventListener("click", function () { track("share_whatsapp_click"); });

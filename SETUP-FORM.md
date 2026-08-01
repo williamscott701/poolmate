@@ -2,7 +2,7 @@
 
 Signups POST to a Google Apps Script web app which appends each one as a row
 in a Google Sheet you own. Free, unlimited, and you can filter/sort by
-commute frequency later to see who travels often.
+travel frequency later to see who travels often.
 
 > **Already deployed the first version of this script?** The site keeps working
 > as-is — nothing to do urgently. But that version writes a hard-coded list of
@@ -123,7 +123,7 @@ commute frequency later to see who travels often.
   field starts a *new* column and leaves the old one behind.
 - **Only the WhatsApp number is required.** Every other column can legitimately
   be blank — the page exists to measure interest, so nothing else blocks a
-  signup. Sort by `frequency` (blanks last) to find the frequent commuters.
+  signup. Sort by `frequency` (blanks last) to find the frequent travellers.
 - **`source` carries extras.** It reads `landing-v2`, plus `ride_with=…` until
   the script above is deployed, plus `flagged=honeypot|fast` on submissions that
   tripped a bot check. Flagged rows are still saved on purpose — a false

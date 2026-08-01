@@ -1,9 +1,9 @@
 # PoolMate — pre-launch waitlist landing page
 
-Static landing page for **PoolMate**, a carpooling network for daily commuters
-(car owners are fellow commuters, not drivers). Collects role-split waitlist
-signups (Car Owner / Passenger) with city, commute frequency, and ride-with
-preference — the WhatsApp number is the only required field —
+Static landing page for **PoolMate**, a carpooling network for shared rides
+(car owners are going the same way, not driving for a living). Collects
+role-split waitlist signups (Car Owner / Passenger) with city, travel
+frequency, and ride-with preference — the WhatsApp number is the only required field —
 launching first in **Bangalore & Hyderabad**.
 
 **Live:** https://poolmateapp.com/
